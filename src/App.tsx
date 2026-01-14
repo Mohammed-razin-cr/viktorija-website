@@ -2,7 +2,25 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { lazy, Suspense } from 'react';
 import Divider from '@mui/material/Divider';
+import PageLoader from './components/PageLoader';
 import './App.css';
+
+// Styles for smooth fade-in
+const contentStyle = {
+  minHeight: '100vh',
+  width: '100%',
+  animation: 'fadeInContent 0.8s ease-in-out forwards',
+  '@keyframes fadeInContent': {
+    from: {
+      opacity: 0,
+      transform: 'translateY(10px)',
+    },
+    to: {
+      opacity: 1,
+      transform: 'translateY(0)',
+    }
+  }
+};
 
 // Lazy load route pages for better code splitting
 const MarketingPage = lazy(() => import('./pages/MarketingPage.tsx'));
@@ -29,6 +47,7 @@ function App({ toggleColorMode }: AppProps) {
       minHeight: '100vh',
       width: '100%',
     }}>
+      <PageLoader />
       <Router basename={basename}>
         <Suspense fallback={
           <Box sx={{ 

@@ -17,8 +17,31 @@ const PainPointsContent = styled(Box)(({ theme }) => ({
   position: 'relative',
   padding: theme.spacing(8, 0),
   overflow: 'hidden',
-  background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)',
+  background: 'linear-gradient(180deg, #f8fafc 0%, #e0e7ff 50%, #f3f4f6 100%)',
   minHeight: '100vh',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '1000px',
+    height: '1000px',
+    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)',
+    pointerEvents: 'none',
+    zIndex: 0,
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: '800px',
+    height: '800px',
+    background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%)',
+    pointerEvents: 'none',
+    zIndex: 0,
+  }
 }));
 
 const ComparisonCard = styled(Card)(({ theme }) => ({
@@ -28,10 +51,22 @@ const ComparisonCard = styled(Card)(({ theme }) => ({
   background: '#ffffff',
   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
   transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  border: '1px solid rgba(59, 130, 246, 0.1)',
   '&:hover': {
-    transform: 'translateY(-12px)',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+    transform: 'translateY(-16px)',
+    boxShadow: '0 30px 80px rgba(59, 130, 246, 0.2)',
+    borderColor: 'rgba(59, 130, 246, 0.3)',
   },
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '3px',
+    background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4)',
+    zIndex: 10,
+  }
 }));
 
 
@@ -259,6 +294,7 @@ export default function PainPoints({
                       position: 'relative',
                       height: '240px',
                       overflow: 'hidden',
+                      background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
                     }}
                   >
                     <Box
@@ -270,13 +306,30 @@ export default function PainPoints({
                         width: '100%', 
                         height: '100%',
                         objectFit: 'cover',
-                        transition: 'transform 0.6s ease',
+                        transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
                         '&:hover': {
-                          transform: 'scale(1.1)',
+                          transform: 'scale(1.15) rotate(2deg)',
                         }
                       }}
                     />
-                    {/* Category Badge */}
+                    {/* Overlay Gradient on Hover */}
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)',
+                        opacity: 0,
+                        transition: 'opacity 0.4s ease',
+                        pointerEvents: 'none',
+                        '.MuiCard-root:hover &': {
+                          opacity: 1,
+                        }
+                      }}
+                    />
+                    {/* Category Badge - Enhanced */}
                     <Box
                       sx={{
                         position: 'absolute',
@@ -284,15 +337,27 @@ export default function PainPoints({
                         left: 16,
                         background: 'rgba(255, 255, 255, 0.95)',
                         backdropFilter: 'blur(10px)',
-                        px: 2,
-                        py: 1,
+                        px: 2.5,
+                        py: 1.2,
                         borderRadius: '50px',
                         fontSize: '0.875rem',
                         fontWeight: 700,
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 1,
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        gap: 0.75,
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
+                        border: '1px solid rgba(255, 255, 255, 0.5)',
+                        animation: 'slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        '@keyframes slideDown': {
+                          from: {
+                            opacity: 0,
+                            transform: 'translateY(-10px)',
+                          },
+                          to: {
+                            opacity: 1,
+                            transform: 'translateY(0)',
+                          }
+                        }
                       }}
                     >
                       {item.id === 'category-a' && '🏍️ A-kategooria'}
@@ -301,7 +366,7 @@ export default function PainPoints({
                     </Box>
                   </Box>
 
-                  <CardContent sx={{ p: 4 }}>
+                  <CardContent sx={{ p: 4, position: 'relative', zIndex: 1 }}>
                     {/* Title with Icon */}
                     {/* <Typography 
                       variant="h5" 
@@ -342,57 +407,57 @@ export default function PainPoints({
 
                     {/* Features List - Extract from description or use defaults */}
                     {item.id === 'category-a' && (
-                      <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 0.5 }}>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                      <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 3 }}>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Teooriakursus</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Praktilised sõidutunnid</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Eksamite sooritamine</span>
                         </Box>
                       </Box>
                     )}
                     {item.id === 'category-b' && (
-                      <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 0.5 }}>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                      <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 3 }}>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>95% edu esimesel korral</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Individuaalne lähenemine</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Paindlik ajakava</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Kaasaegsed autod</span>
                         </Box>
                       </Box>
                     )}
                     {item.id === 'category-c' && (
-                      <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 0.5 }}>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                      <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, mb: 3 }}>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>100% tagatud tulemus</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Kogenud instruktorid</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Individuaalne lähenemine</span>
                         </Box>
-                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.2, fontSize: '0.95rem', color: '#475569' }}>
-                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.1rem' }}>✅</Box>
+                        <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 0.6, fontSize: '0.95rem', color: '#475569', transition: 'all 0.3s ease', '&:hover': { color: '#22c55e', transform: 'translateX(4px)' } }}>
+                          <Box component="span" sx={{ color: '#22c55e', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', minHeight: '24px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>✅</Box>
                           <span>Paindlik ajakava</span>
                         </Box>
                       </Box>
@@ -400,70 +465,72 @@ export default function PainPoints({
                     {/* Pricing Section with Gradient Background */}
                     <Box
                       sx={{
-                        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
-                        p: 2.5,
+                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)',
+                        p: 3,
                         borderRadius: '16px',
-                        mb: 3
+                        mb: 3,
+                        border: '1px solid rgba(59, 130, 246, 0.1)',
+                        backdropFilter: 'blur(10px)'
                       }}
                     >
                       {item.price.finalLabel && item.price.finalPrice !== undefined ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2 }}>
                           <Typography sx={{ color: '#64748b', fontWeight: 500, fontSize: '0.95rem' }}>
                             {item.price.finalLabel}
                           </Typography>
-                          <Typography sx={{ color: '#3b82f6', fontWeight: 700, fontSize: '1.1rem' }}>
+                          <Typography sx={{ color: '#3b82f6', fontWeight: 800, fontSize: '1.3rem', letterSpacing: '-0.5px' }}>
                             {item.price.finalPrice} {t('painpoints.euro')}
                           </Typography>
                         </Box>
                       ) : (
                         <>
                           {item.price.theory !== undefined && (
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2 }}>
                               <Typography sx={{ color: '#64748b', fontWeight: 500, fontSize: '0.95rem' }}>
                                 {t('painpoints.theory')}:
                               </Typography>
-                              <Typography sx={{ color: '#1e293b', fontWeight: 700, fontSize: '0.95rem' }}>
+                              <Typography sx={{ color: '#475569', fontWeight: 700, fontSize: '1rem' }}>
                                 {item.price.theory} {t('painpoints.euro')}
                               </Typography>
                             </Box>
                           )}
                           {item.price.lesson !== undefined && (
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2 }}>
                               <Typography sx={{ color: '#64748b', fontWeight: 500, fontSize: '0.95rem' }}>
                                 {t('painpoints.lesson')}:
                               </Typography>
-                              <Typography sx={{ color: '#1e293b', fontWeight: 700, fontSize: '0.95rem' }}>
+                              <Typography sx={{ color: '#475569', fontWeight: 700, fontSize: '1rem' }}>
                                 {item.price.lesson} {t('painpoints.euro')}
                               </Typography>
                             </Box>
                           )}
                           {item.price.manualTotalLabel ? (
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
-                              <Typography sx={{ color: '#64748b', fontWeight: 500, fontSize: '0.95rem' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2, borderTop: '1px solid rgba(59, 130, 246, 0.2)', pt: 1.5, mt: 1.5 }}>
+                              <Typography sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.95rem' }}>
                                 {item.price.manualTotalLabel}
                               </Typography>
-                              <Typography sx={{ color: '#1e293b', fontWeight: 700, fontSize: '0.95rem' }}>
+                              <Typography sx={{ color: '#3b82f6', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
                                 {item.price.total} {t('painpoints.euro')}
                               </Typography>
                             </Box>
                           ) : (
                             item.price.total !== undefined && (
-                              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
-                                <Typography sx={{ color: '#64748b', fontWeight: 500, fontSize: '0.95rem' }}>
+                              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2, borderTop: '1px solid rgba(59, 130, 246, 0.2)', pt: 1.5, mt: 1.5 }}>
+                                <Typography sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.95rem' }}>
                                   {t('painpoints.total')}:
                                 </Typography>
-                                <Typography sx={{ color: '#3b82f6', fontWeight: 700, fontSize: '1.1rem' }}>
+                                <Typography sx={{ color: '#3b82f6', fontWeight: 800, fontSize: '1.3rem', letterSpacing: '-0.5px' }}>
                                   {item.price.total} {t('painpoints.euro')}
                                 </Typography>
                               </Box>
                             )
                           )}
                           {item.price.autoTotalLabel && item.price.autoTotal !== undefined && (
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
-                              <Typography sx={{ color: '#64748b', fontWeight: 500, fontSize: '0.95rem' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.2, borderTop: '1px solid rgba(59, 130, 246, 0.2)', pt: 1.5, mt: 1.5 }}>
+                              <Typography sx={{ color: '#64748b', fontWeight: 600, fontSize: '0.95rem' }}>
                                 {item.price.autoTotalLabel}
                               </Typography>
-                              <Typography sx={{ color: '#3b82f6', fontWeight: 700, fontSize: '1.1rem' }}>
+                              <Typography sx={{ color: '#3b82f6', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
                                 {item.price.autoTotal} {t('painpoints.euro')}
                               </Typography>
                             </Box>
@@ -476,22 +543,28 @@ export default function PainPoints({
                     {item.afterPrice && (
                       <Box
                         sx={{
-                          background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
+                          background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%)',
                           borderLeft: '4px solid #f59e0b',
-                          p: 2,
+                          p: 2.5,
                           borderRadius: '12px',
                           mb: 3,
                           fontSize: '0.9rem',
-                          color: '#78350f',
+                          color: '#92400e',
                           fontWeight: 600,
-                          lineHeight: 1.6
+                          lineHeight: 1.6,
+                          border: '1px solid rgba(245, 158, 11, 0.2)',
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.12) 0%, rgba(245, 158, 11, 0.12) 100%)',
+                            borderLeftColor: '#f97316',
+                          }
                         }}
                       >
                         {item.afterPrice}
                       </Box>
                     )}
                     {/* Action Buttons */}
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, width: '100%' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.75, width: '100%' }}>
                       {item.buttonLink && item.buttonLink.startsWith('http') ? (
                         <a 
                           href={item.buttonLink}
@@ -513,29 +586,45 @@ export default function PainPoints({
                               );
                             }}
                             sx={{
-                              py: 2,
+                              py: 2.2,
                               px: 3,
                               fontSize: '1.05rem',
                               fontWeight: 700,
-                              borderRadius: '12px',
+                              borderRadius: '14px',
                               background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                               color: 'white',
-                              boxShadow: '0 8px 20px rgba(34, 197, 94, 0.3)',
+                              boxShadow: '0 12px 25px rgba(34, 197, 94, 0.25)',
                               textTransform: 'none',
                               width: '100%',
-                              transition: 'all 0.3s ease',
+                              transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              gap: 1.25,
+                              gap: 1,
+                              position: 'relative',
+                              overflow: 'hidden',
+                              '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                inset: 0,
+                                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                                transform: 'translateX(-100%)',
+                              },
                               '&:hover': {
-                                transform: 'translateY(-2px)',
-                                boxShadow: '0 12px 30px rgba(34, 197, 94, 0.4)',
+                                transform: 'translateY(-3px)',
+                                boxShadow: '0 18px 40px rgba(34, 197, 94, 0.35)',
                                 background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                                '&::before': {
+                                  transform: 'translateX(100%)',
+                                  transition: 'transform 0.6s ease',
+                                }
+                              },
+                              '&:active': {
+                                transform: 'translateY(-1px)',
                               }
                             }}
                           >
-                            <Box component="span">
+                            <Box component="span" sx={{ fontSize: '1.3rem' }}>
                               {item.id === 'category-a' && '🏍️'}
                               {item.id === 'category-b' && '🚗'}
                               {item.id === 'category-c' && '🎉'}
